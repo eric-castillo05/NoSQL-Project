@@ -52,12 +52,11 @@ public class ConsultarPipelines extends JFrame{
                 showResults(results);
             }
         });
-
-
     }
+
     public void showResults(List<Document> results){
         if (results.isEmpty()) {
-            JOptionPane.showMessageDialog(ConsultarPipelines.this, "No hay información para mostrar", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(ConsultarPipelines.this, "No hay información para mostrar", "Error", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         List<String> columns = getColumns(results);

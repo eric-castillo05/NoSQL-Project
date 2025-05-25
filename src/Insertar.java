@@ -22,6 +22,7 @@ public class Insertar extends JFrame {
     private JTable table1;
     private JButton agregarProductoButton;
     private JTextField textField7;
+    private JButton regresarButton;
     private DefaultTableModel tableModel;
     private List<List<Object>> productos = new ArrayList<>();
     private MongoDB mongoDB = new MongoDB();
@@ -91,10 +92,7 @@ public class Insertar extends JFrame {
                                     JOptionPane.ERROR_MESSAGE);
                             error = true;
                             break;
-
                     }
-
-
                 }
                 if (text7 == null || text7.isEmpty()) {
                     JOptionPane.showMessageDialog(Insertar.this,
@@ -177,6 +175,16 @@ public class Insertar extends JFrame {
                     System.out.println(ex);
                     JOptionPane.showMessageDialog(Insertar.this, "Hubo un fallo al insertar", "Fallo", JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        });
+        regresarButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new main();
+                dispose();
             }
         });
     }

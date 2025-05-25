@@ -11,11 +11,12 @@ public class ConsultarPipelines extends JFrame{
     private JComboBox comboBox1;
     private JButton button1;
     private JTable table1;
+    private JButton regresarButton;
 
     public ConsultarPipelines() {
         setTitle("Ventana de Consulta de Pipelines");
         setContentPane(pipelinesFrame);
-        setSize(800, 300);
+        setSize(1000, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
 
@@ -50,6 +51,16 @@ public class ConsultarPipelines extends JFrame{
                     results = pipelines.sextaConsulta();
                 }
                 showResults(results);
+            }
+        });
+        regresarButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new main();
+                dispose();
             }
         });
     }

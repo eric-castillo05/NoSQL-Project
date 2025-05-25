@@ -157,7 +157,7 @@ public class Insertar extends JFrame {
                             .append("minuto", now.getMinute());
                     Document d = new Document();
 
-                    d.append("fecha", fecha).append("nombre",textField7.getText()).append("productos", (productosDocs));
+                    d.append("fecha", fecha).append("cliente",textField7.getText()).append("productos", (productosDocs));
                     System.out.println(d.toJson());
                     try {
                         mongoDB.insertOne(d);

@@ -64,6 +64,12 @@ public class ConsultarPipelines extends JFrame{
         });
     }
 
+    /**
+     * Muestra los resultados de una consulta de agregación en una tabla.
+     * Aplana documentos anidados para mostrarlos correctamente.
+     *
+     * @param results Lista de documentos obtenidos de la consulta.
+     */
     public void showResults(List<Document> results){
         if (results.isEmpty()) {
             JOptionPane.showMessageDialog(ConsultarPipelines.this, "No hay información para mostrar", "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -99,6 +105,12 @@ public class ConsultarPipelines extends JFrame{
         table1.setModel(tableModel);
     }
 
+    /**
+     * Obtiene dinámicamente las columnas de los documentos para la tabla.
+     *
+     * @param d Lista de documentos de la consulta.
+     * @return Lista de nombres de columnas, incluyendo claves anidadas.
+     */
     public List<String> getColumns(List<Document> d){
         Set<String> columns = new LinkedHashSet<>();
         for (Document doc : d) {

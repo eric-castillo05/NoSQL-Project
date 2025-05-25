@@ -39,13 +39,19 @@ public class Consultar extends JFrame{
         });
     }
 
+    /**
+     * Muestra los documentos de la colección en una tabla.
+     * Formatea los datos para incluir información de productos y fecha.
+     *
+     * @param results Lista de documentos obtenidos de la base de datos.
+     */
     public void showResults(List<Document> results){
         if (results == null || results.isEmpty()) {
             JOptionPane.showMessageDialog(Consultar.this, "No hay información para mostrar", "Error", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        List<String> columns = getColumns(results);
+        List<String> columns = getColumns();
         System.out.println("Columns: " + columns);
         String[] columnNames = columns.toArray(new String[0]);
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
@@ -110,8 +116,12 @@ public class Consultar extends JFrame{
         table1.revalidate();
     }
 
-
-    public List<String> getColumns(List<Document> d){
+    /**
+     * Obtiene las columnas para la tabla de resultados.
+     *
+     * @return Lista de nombres de columnas predefinidas.
+     */
+    public List<String> getColumns(){
         return Arrays.asList("_id", "fecha", "cliente", "id_p", "nombre", "PUV", "Cantidad", "IVA", "PUC");
     }
 }

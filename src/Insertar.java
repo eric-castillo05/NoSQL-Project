@@ -137,7 +137,6 @@ public class Insertar extends JFrame {
                     return;
                 }
                 try {
-                    // Crear lista Document para MongoDB
                     List<Document> productosDocs = new ArrayList<>();
                     for (List<Object> p : productos) {
                         Document prodDoc = new Document()
@@ -187,6 +186,10 @@ public class Insertar extends JFrame {
             }
         });
     }
+
+    /**
+     * Limpia los campos de texto de la interfaz de inserción.
+     */
     public void cleanFields(){
         textField1.setText("");
         textField2.setText("");

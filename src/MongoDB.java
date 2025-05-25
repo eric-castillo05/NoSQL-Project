@@ -10,7 +10,12 @@ public class MongoDB {
     private final String databaseName = "fact";
     private final String collectionName = "fact";
 
-
+    /**
+     * Recupera todos los documentos de la colección 'fact' en la base de datos.
+     * Imprime los documentos en formato JSON en la consola y los retorna como lista.
+     *
+     * @return Lista de documentos obtenidos de la colección.
+     */
     public List<Document> returnAll(){
         List<Document> results = new ArrayList<>();
         try {
@@ -26,6 +31,11 @@ public class MongoDB {
         return results;
     }
 
+    /**
+     * Inserta un único documento en la colección 'fact'.
+     *
+     * @param d Documento a insertar.
+     */
     public void insertOne(Document d) {
         MongoCollection<Document> collection = mongoClient.getDatabase(databaseName).getCollection(collectionName);
         collection.insertOne(d);

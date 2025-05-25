@@ -21,6 +21,7 @@ public class Insertar extends JFrame {
     private JButton agregarButton;
     private JTable table1;
     private JButton agregarProductoButton;
+    private JTextField textField7;
     private DefaultTableModel tableModel;
     private List<List<Object>> productos = new ArrayList<>();
     private MongoDB mongoDB = new MongoDB();
@@ -50,6 +51,7 @@ public class Insertar extends JFrame {
                 String text4 = textField4.getText();
                 String text5 = textField5.getText();
                 String text6 = textField6.getText();
+                String text7 = textField7.getText();
                 valores[0] = text1 != null ? text1.trim() : "";
                 valores[1] = text2 != null ? text2.trim() : "";
                 valores[2] = text3 != null ? text3.trim() : "";
@@ -94,6 +96,13 @@ public class Insertar extends JFrame {
 
 
                 }
+                if (text7 == null || text7.isEmpty()) {
+                    JOptionPane.showMessageDialog(Insertar.this,
+                            "El campo nombre es oblogatorio",
+                            "Fallo",
+                            JOptionPane.ERROR_MESSAGE);
+                    error = true;
+                }
                 if (error) return;
                 List<Object> producto = Arrays.asList(
                         valores[0], // id_p (String)
@@ -116,6 +125,7 @@ public class Insertar extends JFrame {
                         valores[5]
                 });
                 table1.repaint();
+                textField1.setEnabled(true);
                 cleanFields();
             }
         });
@@ -151,7 +161,7 @@ public class Insertar extends JFrame {
                             .append("minuto", now.getMinute());
                     Document d = new Document();
 
-                    d.append("fecha", fecha).append("productos", (productosDocs));
+                    d.append("fecha", fecha).append("nombre",textField7.getText()).append("productos", (productosDocs));
                     System.out.println(d.toJson());
                     try {
                         mongoDB.insertOne(d);

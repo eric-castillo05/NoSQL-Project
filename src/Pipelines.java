@@ -17,12 +17,13 @@ public class Pipelines {
     private final MongoClient mongoClient = MongoClients.create("mongodb://root:root@localhost:27017");
     private final String databaseName = "fact";
     private final String collectionName = "fact";
+    private List<Document> results = new ArrayList<>();
 
-    public void primeraConsulta(){
+    public List<Document> primeraConsulta(){
         try {
             MongoCollection<Document> collection = mongoClient.getDatabase(databaseName).getCollection(collectionName);
             Bson group = group("$cliente", sum("totalFact", 1));
-            List<Document> results = collection.aggregate(List.of(group)).into(new ArrayList<>());
+            results = collection.aggregate(List.of(group)).into(new ArrayList<>());
             for (Document doc : results) {
                 System.out.println(doc.toJson());
             }
@@ -30,9 +31,10 @@ public class Pipelines {
             System.out.println("Error");
             e.printStackTrace();
         }
+        return results;
     }
 
-    public void segundaConsulta(){
+    public List<Document> segundaConsulta(){
         try{
             MongoCollection<Document> collection = mongoClient.getDatabase(databaseName).getCollection(collectionName);
             Bson group = group(
@@ -40,7 +42,7 @@ public class Pipelines {
                             sum("totalFact", 1)
             );
             Bson sort = sort(ascending("_id.cliente"));
-            List<Document> results = collection.aggregate(List.of(group, sort)).into(new ArrayList<>());
+            results = collection.aggregate(List.of(group, sort)).into(new ArrayList<>());
             for (Document doc : results) {
                 System.out.println(doc.toJson());
             }
@@ -49,9 +51,10 @@ public class Pipelines {
             System.out.println("Error");
             e.printStackTrace();
         }
+        return results;
     }
 
-    public void terceraConsulta(){
+    public List<Document> terceraConsulta(){
         try{
             MongoCollection<Document> collection = mongoClient.getDatabase(databaseName).getCollection(collectionName);
             Bson match = match(eq("fecha.year", 2020));
@@ -61,7 +64,7 @@ public class Pipelines {
             );
             Bson sort = sort(ascending("total"));
             Bson limit = limit(1);
-            List<Document> results = collection.aggregate(List.of(match, unwind, group, sort, limit)).into(new ArrayList<>());
+            results = collection.aggregate(List.of(match, unwind, group, sort, limit)).into(new ArrayList<>());
             for (Document doc : results) {
                 System.out.println(doc.toJson());
             }
@@ -69,9 +72,10 @@ public class Pipelines {
             System.out.println("Error");
             e.printStackTrace();
         }
+        return results;
     }
 
-    public void cuartaConsulta(){
+    public List<Document> cuartaConsulta(){
         try{
             MongoCollection<Document> collection = mongoClient.getDatabase(databaseName).getCollection(collectionName);
             Bson unwind = unwind("$productos");
@@ -81,7 +85,7 @@ public class Pipelines {
             Bson project = project(new Document("_id", 1)
                     .append("diff_product", 1)
                     .append("total", new Document("$size", "$diff_product")));
-            List<Document> results = collection.aggregate(List.of(unwind, group, project)).into(new ArrayList<>());
+            results = collection.aggregate(List.of(unwind, group, project)).into(new ArrayList<>());
             for (Document doc : results) {
                 System.out.println(doc.toJson());
             }
@@ -89,8 +93,9 @@ public class Pipelines {
             System.out.println("Error");
             e.printStackTrace();
         }
+        return results;
     }
-    public void quintaConsulta(){
+    public List<Document> quintaConsulta(){
         try{
             MongoCollection<Document> collection = mongoClient.getDatabase(databaseName).getCollection(collectionName);
             Bson unwind = unwind("$productos");
@@ -113,7 +118,7 @@ public class Pipelines {
             Bson project = project(new Document("_id", 1)
                             .append("total_IVA", new Document("$add", Arrays.asList("$total_IVA", "$total")))
                     );
-            List<Document> results = collection.aggregate(List.of(unwind, group, project)).into(new ArrayList<>());
+            results = collection.aggregate(List.of(unwind, group, project)).into(new ArrayList<>());
             for (Document doc : results) {
                 System.out.println(doc.toJson());
             }
@@ -121,8 +126,9 @@ public class Pipelines {
             System.out.println("Error");
             e.printStackTrace();
         }
+        return results;
     }
-    public void sextaConsulta(){
+    public List<Document> sextaConsulta(){
         try{
             MongoCollection<Document> collection = mongoClient.getDatabase(databaseName).getCollection(collectionName);
             Bson unwind = unwind("$productos");
@@ -142,7 +148,7 @@ public class Pipelines {
                     )))
             );
 
-            List<Document> results = collection.aggregate(List.of(unwind, group)).into(new ArrayList<>());
+            results = collection.aggregate(List.of(unwind, group)).into(new ArrayList<>());
             for (Document doc : results) {
                 System.out.println(doc.toJson());
             }
@@ -150,5 +156,6 @@ public class Pipelines {
             System.out.println("Error");
             e.printStackTrace();
         }
+        return results;
     }
 }

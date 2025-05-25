@@ -4,10 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ConsultarPipelines extends JFrame{
     private JPanel pipelinesFrame;
@@ -40,17 +37,17 @@ public class ConsultarPipelines extends JFrame{
                 List<Document> results = new ArrayList<>();
                 String seleccion = (String) comboBox1.getSelectedItem();
                 if (seleccion.equals("Primera Consulta")) {
-                    showResults(pipelines.primeraConsulta());
+                    results = (pipelines.primeraConsulta());
                 } else if (seleccion.equals("Segunda Consulta")) {
-                    showResults(pipelines.segundaConsulta());
+                    results = (pipelines.segundaConsulta());
                 } else if (seleccion.equals("Tercera Consulta")) {
-                    pipelines.terceraConsulta();
+                    results = (pipelines.terceraConsulta());
                 } else if (seleccion.equals("Cuarta Consulta")) {
-                    pipelines.cuartaConsulta();
+                    results = (pipelines.cuartaConsulta());
                 } else if (seleccion.equals("Quinta Consulta")) {
-                    pipelines.quintaConsulta();
+                    results = (pipelines.quintaConsulta());
                 } else if (seleccion.equals("Sexta Consulta")) {
-                    pipelines.sextaConsulta();
+                    results = pipelines.sextaConsulta();
                 }
                 showResults(results);
             }
@@ -59,27 +56,53 @@ public class ConsultarPipelines extends JFrame{
 
     }
     public void showResults(List<Document> results){
-        if (results.isEmpty() && results == null) {
+        if (results.isEmpty()) {
             JOptionPane.showMessageDialog(ConsultarPipelines.this, "No hay información para mostrar", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        Document firstR = results.get(0);
-        Set<String> columns = new HashSet<>();
-        for (Document d : results) {
-            columns.addAll(d.keySet());
-        }
+        List<String> columns = getColumns(results);
         System.out.println(columns);
         String [] columnNames = columns.toArray(new String[0]);
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
-        tableModel.setRowCount(0);
+        //tableModel.setRowCount(0);
         for(Document d : results){
             Object[] row = new Object[columnNames.length];
-            for (int i = 0; i < columnNames.length; i++) {
-                row[i] = d.get(columnNames[i]);
+            Map<String, Object> flatMap = new HashMap<>();
+
+            for (String key : d.keySet()) {
+                Object value = d.get(key);
+                if (value instanceof Document nested) {
+                    for (String nestedKey : nested.keySet()) {
+                        flatMap.put(nestedKey, nested.get(nestedKey));
+                    }
+                } else {
+                    flatMap.put(key, value);
+                }
             }
+
+            for (int i = 0; i < columnNames.length; i++) {
+                row[i] = flatMap.get(columnNames[i]);
+            }
+
             tableModel.addRow(row);
         }
+
         table1.setModel(tableModel);
+    }
+
+    public List<String> getColumns(List<Document> d){
+        Set<String> columns = new LinkedHashSet<>();
+        for (Document doc : d) {
+            for(String key : doc.keySet()){
+                Object value = doc.get(key);
+                if (value instanceof Document nested) {
+                    columns.addAll(nested.keySet());
+                } else {
+                    columns.add(key);
+                }
+            }
+        }
+        return new ArrayList<>(columns);
     }
 
 }

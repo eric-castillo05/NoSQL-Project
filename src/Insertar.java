@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import org.bson.Document;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

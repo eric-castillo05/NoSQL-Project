@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class main extends JFrame{
     private JButton consultarButton;
     private JButton insertarButton;
@@ -23,6 +24,7 @@ public class main extends JFrame{
                 dispose();
             }
         });
+
         consultasPipelinesButton.addActionListener(new ActionListener() {
             /**
              * @param e
@@ -33,6 +35,7 @@ public class main extends JFrame{
                 dispose();
             }
         });
+
         insertarButton.addActionListener(new ActionListener() {
             /**
              * @param e the event to be processed

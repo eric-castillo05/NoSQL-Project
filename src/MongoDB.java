@@ -6,6 +6,8 @@ import com.mongodb.client.MongoCursor;
 import org.bson.Document;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MongoDB {
     private final MongoClient mongoClient = MongoClients.create("mongodb://root:root@localhost:27017");
@@ -13,16 +15,19 @@ public class MongoDB {
     private final String collectionName = "fact";
 
 
-    public void returnAll(){
+    public List<Document> returnAll(){
+        List<Document> results = new ArrayList<>();
         try {
             MongoCollection<Document> collection = mongoClient.getDatabase(databaseName).getCollection(collectionName);
             for (Document document : collection.find()) {
                 System.out.println(document.toJson());
             }
+            results = collection.find().into(new ArrayList<>());
         } catch (Exception e) {
             System.out.println("Error");
             e.printStackTrace();
         }
+        return results;
     }
 
     public void insertOne(Document d) {
